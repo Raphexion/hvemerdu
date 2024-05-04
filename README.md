@@ -1,4 +1,4 @@
-# Hvemerdu
+# Hvem er du?
 
 ![Nuværende tilstand](priv/current-state.png)
 
