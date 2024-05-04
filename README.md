@@ -1,5 +1,18 @@
 # Hvemerdu
 
+![Nuværende tilstand](priv/current-state.png)
+
+> Det er alt for nemt at narre folk over telefonen. Vi bygger derfor et system,
+> der hjælper virksomheder og mennesker med at skabe tillid over telefonen. Du
+> skal altid være sikker på at vide, hvem du taler med. Er det en fra dit
+> forsikringsselskab eller er det en kriminel?
+
+![Vi hjælper dig](priv/girl-helper.png)
+
+![Idé](priv/idea.png)
+
+## Getting Started
+
 To start your Phoenix server:
 
   * Run `mix setup` to install and setup dependencies
