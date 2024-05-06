@@ -21,6 +21,10 @@ defmodule HvemerduWeb.Router do
     live "/verify", VerifyLive
   end
 
+  scope "/v1", HvemerduWeb do
+    post "/unsafe-acks", UnsafeAckController, :ack
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", HvemerduWeb do
   #   pipe_through :api
