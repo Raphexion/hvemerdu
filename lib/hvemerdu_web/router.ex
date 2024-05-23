@@ -18,6 +18,7 @@ defmodule HvemerduWeb.Router do
     pipe_through :browser
 
     live "/", ChallengeLive
+    live "/verify", VerifyLive
   end
 
   # Other scopes may use custom stacks.

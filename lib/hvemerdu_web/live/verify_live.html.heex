@@ -1,0 +1,9 @@
+<div phx-window-keydown="key_down" phx-window-keyup="key_up">
+  <div class="p-4 rounded-lg bg-blue-50">
+    <%= if not @verified? do %>
+      <.waiting symbols={@symbols} />
+    <% else %>
+      <.success />
+    <% end %>
+  </div>
+</div>
