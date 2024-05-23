@@ -17,7 +17,7 @@ defmodule HvemerduWeb.Router do
   scope "/", HvemerduWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", ChallengeLive
   end
 
   # Other scopes may use custom stacks.
