@@ -10,7 +10,9 @@ defmodule HvemerduWeb.ChallengeLive do
   def size, do: @size
 
   def mount(_params, _session, socket) do
-    if connected?(socket) do
+    connected? = connected?(socket)
+
+    if connected? do
       InterCom.subscribe()
     end
 
@@ -18,7 +20,7 @@ defmodule HvemerduWeb.ChallengeLive do
       socket
       |> assign(:verified?, false)
       |> assign(size: @size)
-      |> assign(symbols: symbols())
+      |> assign(symbols: symbols(connected?))
 
     {:ok, socket}
   end
@@ -27,7 +29,7 @@ defmodule HvemerduWeb.ChallengeLive do
     ~H"""
     <div>
       <div style="display: flex; flex-direction: row; justify-content: space-around;">
-        <div :for={symbol <- @symbols} class="text-3xl p-4 rounded-lg bg-orange-500 text-yellow-100">
+        <div :for={symbol <- @symbols} class="text-3xl p-4 rounded-lg bg-orange-500 text-yellow-50">
           <%= symbol %>
         </div>
       </div>
@@ -69,11 +71,15 @@ defmodule HvemerduWeb.ChallengeLive do
     end
   end
 
-  defp symbols do
+  defp symbols(false) do
+    for _ <- 1..@size, do: "*"
+  end
+
+  defp symbols(true) do
     1..@size
     |> Enum.map(fn ii ->
       if rem(ii, 3) == 0 do
-        Enum.random(["B", "C", "D", "E", "F", "G", "H", "K", "L", "M", "N"])
+        Enum.random(["C", "D", "E", "F", "G", "H", "K", "L", "M", "N", "P", "Q", "R", "T", "X"])
       else
         Enum.random(2..9) |> Integer.to_string()
       end
