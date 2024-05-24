@@ -9,7 +9,8 @@ defmodule Hvemerdu.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      dialyzer: dialyzer()
     ]
   end
 
@@ -52,7 +53,9 @@ defmodule Hvemerdu.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.2"}
+      {:bandit, "~> 1.2"},
+      {:dialyxir, "~> 1.3", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -71,7 +74,18 @@ defmodule Hvemerdu.MixProject do
         "tailwind hvemerdu --minify",
         "esbuild hvemerdu --minify",
         "phx.digest"
-      ]
+      ],
+      lint: ["format --check-formatted", "credo", "dialyzer"]
+    ]
+  end
+
+  defp dialyzer do
+    [
+      plt_add_apps: [:ex_unit, :mix],
+      ignore_warnings: "dialyzer_ignore.exs",
+      list_unused_filters: true,
+      plt_local_path: "priv/plts/project.plt",
+      plt_core_path: "priv/plts/core.plt"
     ]
   end
 end
