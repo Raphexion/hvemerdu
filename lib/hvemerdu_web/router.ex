@@ -10,6 +10,10 @@ defmodule HvemerduWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :auth do
+    plug HvemerduWeb.Plugs.Auth
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -18,6 +22,11 @@ defmodule HvemerduWeb.Router do
     pipe_through :browser
 
     live "/", ChallengeLive
+  end
+
+  scope "/", HvemerduWeb do
+    pipe_through [:browser, :auth]
+
     live "/verify", VerifyLive
   end
 
