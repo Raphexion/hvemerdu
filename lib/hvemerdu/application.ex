@@ -11,8 +11,8 @@ defmodule Hvemerdu.Application do
       HvemerduWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:hvemerdu, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Hvemerdu.PubSub},
-      # Start a worker by calling: Hvemerdu.Worker.start_link(arg)
-      # {Hvemerdu.Worker, arg},
+      # Start a worker by calling: Hvemerdu.Worker.start_link(arg),
+      Hvemerdu.UserDB,
       # Start to serve requests, typically the last entry
       HvemerduWeb.Endpoint
     ]
