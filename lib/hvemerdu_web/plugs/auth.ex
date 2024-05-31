@@ -28,7 +28,7 @@ defmodule HvemerduWeb.Plugs.Auth do
     case UserDB.fetch(user) do
       {:ok, ^pass} -> {:ok, user}
       {:ok, _} -> {:error, :bad_pass}
-      :error -> {:error, :bad_user}
+      {:error, _} -> {:error, :bad_user}
     end
   end
 end
