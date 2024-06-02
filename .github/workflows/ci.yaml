@@ -1,0 +1,45 @@
+name: Continuous Integration
+
+on: push
+
+permissions:
+  contents: read
+
+env:
+  otp: "26.2.5"
+  elixir: "1.16.3-otp-26"
+  MIX_ENV: test
+
+jobs:
+  backend:
+    name: Linting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup elixir
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ env.otp }}
+          elixir-version: ${{ env.elixir }}
+
+      - name: Cache deps
+        uses: actions/cache@v3
+        with:
+          key: deps-${{ runner.os }}-${{ env.otp }}-${{ env.elixir }}-${{ hashFiles('**/mix.lock', '**/mix.exs') }}
+          path: ./backend/deps
+
+      - name: Cache build
+        uses: actions/cache@v3
+        with:
+          key: build-${{ runner.os }}-${{ env.otp }}-${{ env.elixir }}-${{ hashFiles('**/mix.lock', '**/mix.exs') }}
+          path: ./backend/_build
+
+      - run: mix deps.get
+      - run: mix compile --warnings-as-errors
+      - run: mix format --check-formatted
+      - run: mix credo
+      - run: mix dialyzer --format github
+      - run: mix test
