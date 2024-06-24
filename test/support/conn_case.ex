@@ -31,7 +31,77 @@ defmodule HvemerduWeb.ConnCase do
     end
   end
 
-  setup _tags do
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+  setup [
+    :setup_conn,
+    :setup_keys,
+    :setup_auth
+  ]
+
+  def setup_conn(_context) do
+    conn =
+      Phoenix.ConnTest.build_conn()
+      |> Plug.Conn.put_req_header("content-type", "application/json")
+
+    [conn: conn]
+  end
+
+  def setup_keys(_context) do
+    {:ok, private, public} = Hvemerdu.Keys.generate_pair()
+    :ok = Hvemerdu.PublicKeys.put(public)
+
+    %{private: private}
+  end
+
+  def setup_auth(%{conn: conn, with_valid_jwt: true, private: private}) do
+    now = :os.system_time(:seconds)
+
+    claims = %{
+      "exp" => now + 60,
+      "nbf" => now,
+      "iat" => now
+    }
+
+    jwt = Hvemerdu.Keys.sign(private, claims)
+    [conn: put_bearer(conn, Base.encode64(jwt))]
+  end
+
+  def setup_auth(%{conn: conn, with_invalid_jwt: true}) do
+    {:ok, private, _} = Hvemerdu.Keys.generate_pair()
+
+    now = :os.system_time(:seconds)
+
+    claims = %{
+      "exp" => now + 60,
+      "nbf" => now,
+      "iat" => now
+    }
+
+    jwt = Hvemerdu.Keys.sign(private, claims)
+    [conn: put_bearer(conn, Base.encode64(jwt))]
+  end
+
+  def setup_auth(%{conn: conn, with_outdated_jwt: true, private: private}) do
+    before = :os.system_time(:seconds) - 3600
+
+    claims = %{
+      "exp" => before + 60,
+      "nbf" => before,
+      "iat" => before
+    }
+
+    jwt = Hvemerdu.Keys.sign(private, claims)
+    [conn: put_bearer(conn, Base.encode64(jwt))]
+  end
+
+  def setup_auth(%{conn: conn, with_corrupt_jwt: true}) do
+    [conn: put_bearer(conn, "bad-jwt-data")]
+  end
+
+  def setup_auth(_context) do
+    :ok
+  end
+
+  defp put_bearer(conn, value) do
+    Plug.Conn.put_req_header(conn, "authorization", "Bearer " <> value)
   end
 end

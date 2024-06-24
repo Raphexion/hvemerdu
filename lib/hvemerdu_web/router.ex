@@ -14,6 +14,10 @@ defmodule HvemerduWeb.Router do
     plug HvemerduWeb.Plugs.Auth
   end
 
+  pipeline :jwt_auth do
+    plug HvemerduWeb.Plugs.JwtAuth
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -25,6 +29,9 @@ defmodule HvemerduWeb.Router do
   end
 
   scope "/v1", HvemerduWeb do
+    pipe_through [:api, :jwt_auth]
+
+    post "/verify", VerifyController, :ack
   end
 
   # Other scopes may use custom stacks.
