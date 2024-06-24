@@ -24,12 +24,6 @@ defmodule HvemerduWeb.Router do
     live "/", ChallengeLive
   end
 
-  scope "/", HvemerduWeb do
-    pipe_through [:browser, :auth]
-
-    live "/verify", VerifyLive
-  end
-
   scope "/v1", HvemerduWeb do
   end
 
