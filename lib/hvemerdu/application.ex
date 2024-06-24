@@ -13,6 +13,7 @@ defmodule Hvemerdu.Application do
       {Phoenix.PubSub, name: Hvemerdu.PubSub},
       # Start a worker by calling: Hvemerdu.Worker.start_link(arg),
       Hvemerdu.UserDB,
+      Hvemerdu.PublicKeys,
       # Start to serve requests, typically the last entry
       HvemerduWeb.Endpoint
     ]

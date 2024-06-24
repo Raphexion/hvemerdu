@@ -35,3 +35,6 @@ hvemerdu-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Never save private keys
+/private_keys/
+/priv/private_keys/
