@@ -55,7 +55,10 @@ defmodule Hvemerdu.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
       {:dialyxir, "~> 1.3", only: [:dev, :test], runtime: false},
-      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:jose, "~> 1.11"},
+      {:joken, "~> 2.6"},
+      {:req, "~> 0.5"}
     ]
   end
 
