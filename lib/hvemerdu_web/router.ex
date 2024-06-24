@@ -31,7 +31,6 @@ defmodule HvemerduWeb.Router do
   end
 
   scope "/v1", HvemerduWeb do
-    post "/unsafe-acks", UnsafeAckController, :ack
   end
 
   # Other scopes may use custom stacks.
